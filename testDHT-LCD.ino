@@ -5,55 +5,62 @@
 //              D32  <--> DATA        //
 // ---------------------------------- //
 // DONE
-#include <DHT.h>
 #include <Wire.h> 
 #include <LiquidCrystal_I2C.h>
+#include <DHT.h>
+
+const int DHTPIN = 5;//Chân Out của cảm biến nối chân số 5 Arduino
+const int DHTTYPE = DHT11;   // Khai báo kiểu cảm biến là DHT11
+//const int DHTTYPE = DHT22;   // DHT 22 
+//const int DHTTYPE = DHT21;   // DHT 21 
 
 LiquidCrystal_I2C lcd(0x27,16,2);
-
-const int DHTPIN = 32;
-const int DHTTYPE = DHT11;
-DHT dht(DHTPIN, DHTTYPE);
-
-byte degree[8] = {
-  0B01110,
-  0B01010,
-  0B01110,
-  0B00000,
-  0B00000,
-  0B00000,
-  0B00000,
-  0B00000
-};
+DHT dht(DHTPIN, DHTTYPE); //Khai báo thư viện chân cảm biến và kiểu cảm biến
 
 void setup() {
-  lcd.init();  
-  lcd.backlight();
-  
-  lcd.print("Nhiet do: ");
-  lcd.setCursor(0,1);
-  lcd.print("Do am: ");
-  
-  lcd.createChar(1, degree);
+  Serial.begin(9600);
 
-  dht.begin();  
+  dht.begin(); //Khởi động cảm biến
+
+  lcd.init(); //Khởi động LCD                    
+  lcd.backlight(); //Mở đèn
+  lcd.setCursor(0,0);
+  lcd.print("DO AM:");
+  lcd.setCursor(0,1);
+  lcd.print("C|F:");
 }
 
 void loop() {
-  float h = dht.readHumidity();
-  float t = dht.readTemperature();
+  float doam = dht.readHumidity(); //Đọc độ ẩm
 
-  if (isnan(t) || isnan(h)) { // Kiểm tra xem thử việc đọc giá trị có bị thất bại hay không. Hàm isnan bạn xem tại đây http://arduino.vn/reference/isnan
-  } 
-  else {
-    lcd.setCursor(10,0);
-    lcd.print(round(t));
-    lcd.print(" ");
-    lcd.write(1);
-    lcd.print("C");
+  float doC = dht.readTemperature(); //Đọc nhiệt độ C
 
-    lcd.setCursor(10,1);
-    lcd.print(round(h));
-    lcd.print(" %");    
+  float doF = dht.readTemperature(true); //Đọc nhiệt độ F
+
+  // Kiểm tra cảm biến có hoạt động hay không
+  if (isnan(doam) || isnan(doC) || isnan(doF)) {
+    Serial.println("Không có giá trị trả về từ cảm biến DHT");
+    return;
   }
+
+  Serial.print("Độ ẩm: ");
+  Serial.print(doam);
+  lcd.setCursor(7,0); //con trỏ vị trí số 7, hiện ô số 8
+  lcd.print(doam);
+  lcd.setCursor(12,0); //Con trở ở vị trí 12, hiện ô 13
+  lcd.print("%");
+  
+  Serial.print("%  Nhiệt độ: ");
+  Serial.print(doC);
+  Serial.print("°C | ");
+  Serial.print(doF);
+  Serial.println("°F");
+  lcd.setCursor(5,1);
+  lcd.print(doC);
+  lcd.setCursor(10,1);
+  lcd.print("|");
+  lcd.setCursor(11,1);
+  lcd.print(doF);
+
+  delay(1000);
 }
