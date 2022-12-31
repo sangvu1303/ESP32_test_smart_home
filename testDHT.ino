@@ -1,3 +1,4 @@
+// DATA <--> D32
 // DONE
 #include <DHT.h>
 #define chandht 32 
