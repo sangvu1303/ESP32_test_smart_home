@@ -1,20 +1,20 @@
 // -------------------------------------------------
 // RFID <--> ESP32
 // 3.3V <--> 3.3V
-// RST  <--> D27
+// RST  <--> D5
 // GND  <--> GND
 // MISO <--> D19
 // MOSI <--> D23
 // SCK  <--> D18
-// SDA  <--> D5
+// SDA  <--> D17 / TX2
 // DONE
 // -------------------------------------------------
 
 #include <SPI.h>
 #include <MFRC522.h>
 
-#define RST_PIN  27
-#define SS_PIN  5
+#define RST_PIN  5
+#define SS_PIN  17
 
 // đọc toàn bộ dữ liệu
 //MFRC522 mfrc522(SS_PIN, RST_PIN);
