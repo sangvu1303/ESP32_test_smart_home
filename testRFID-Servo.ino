@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// RFID <--> ESP32
+// 3.3V <--> 3.3V
+// RST  <--> D5
+// GND  <--> GND
+// MISO <--> D19
+// MOSI <--> D23
+// SCK  <--> D18
+// SDA  <--> D17 / TX2
+// DONE
+// -------------------------------------------------
 #include <SPI.h>
 #include <MFRC522.h>
 #include <ESP32Servo.h>
@@ -19,7 +30,7 @@ void setup() {
   Serial.println();
   
   pinMode(4,OUTPUT);
-  myservo.attach(13);
+  myservo.attach(25);
 }
 void loop() {
   // Look for new cards
