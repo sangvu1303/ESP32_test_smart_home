@@ -1,13 +1,13 @@
 // --------------------------
 // SERVO <--> ESP32
-// DATA  <-->  D13 (dây cam)
+// DATA  <-->  D25 / D26 (dây cam)
 // --------------------------
 // DONE
 
 
 #include <ESP32Servo.h>
 
-int servo = 13;
+int servo = 25;
 int goc;
 
 Servo myServo;
